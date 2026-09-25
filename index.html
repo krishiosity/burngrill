@@ -118,7 +118,7 @@ form.add{display:flex;gap:10px;margin:0 0 6px}
 @media (max-width:860px){
   .stage{grid-template-columns:1fr}
   .tools-sidebar{order:-1;flex-direction:column;align-items:stretch;gap:6px}
-  #toolbelt{min-width:0;width:100%;height:120px}
+  #toolbelt{min-width:0;width:100%;height:90px}
   .flame-col{flex-direction:row;padding:6px 0}
   .flame-track{width:100%;height:28px}
   .flame-track::before{left:0;top:50%;transform:translateY(-50%);width:100%;height:10px}
@@ -985,13 +985,15 @@ function select(index){
 select(3); // default to match
 
 let isHoriz=false;
+const mobileQuery=window.matchMedia('(max-width:860px)');
+mobileQuery.addEventListener('change',()=>fitCamera());
 function fitCamera(){
   const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;
   const aspect=w/h;
   const wasHoriz=isHoriz;
-  isHoriz=aspect>1.2;
+  isHoriz=mobileQuery.matches;
   if(isHoriz){
-    const worldW=18.9,worldH=6.75;
+    const worldW=18.9,worldH=4.2;
     const hh=Math.max(worldH,worldW/aspect);
     camera.left=-hh*aspect/2;camera.right=hh*aspect/2;camera.top=hh/2;camera.bottom=-hh/2;
   }else{
@@ -1003,8 +1005,12 @@ function fitCamera(){
   camera.updateProjectionMatrix();renderer.setSize(w,h,false);
 }
 function layoutTools(){
-  environment.tray.rotation.z=isHoriz?Math.PI/2:0;
-  environment.selection.position.set(isHoriz?0:0,isHoriz?0:(2-selected)*3.25,0);
+  environment.tray.rotation.z=isHoriz?-Math.PI/2:0;
+  if(isHoriz){
+    environment.selection.position.set(0,(selected-2)*3.25,0);
+  }else{
+    environment.selection.position.set(0,(2-selected)*3.25,0);
+  }
   for(let i=0;i<tools.length;i++){
     const pos=isHoriz?[(i-2)*3.25,0,.30]:[0,(2-i)*3.25,.30];
     tools[i].root.position.set(...pos);
