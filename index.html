@@ -90,7 +90,7 @@ form.add{display:flex;gap:10px;margin:0 0 6px}
 .cursor[hidden]{display:none}
 
 .tools-sidebar{display:flex;gap:8px;align-items:stretch}
-#toolbelt{flex:1;min-width:200px;height:480px;border-radius:10px;overflow:hidden;cursor:grab;touch-action:none}
+#toolbelt{flex:1;min-width:200px;height:480px;border-radius:10px;overflow:hidden;cursor:grab;touch-action:manipulation}
 #toolbelt:active{cursor:grabbing}
 #toolbelt canvas{display:block;width:100%;height:100%}
 .hint{margin:10px 0 0;color:var(--muted);font-size:14px}
@@ -993,7 +993,7 @@ function fitCamera(){
   const wasHoriz=isHoriz;
   isHoriz=mobileQuery.matches;
   if(isHoriz){
-    const worldW=18.9,worldH=4.2;
+    const worldW=17,worldH=3.2;
     const hh=Math.max(worldH,worldW/aspect);
     camera.left=-hh*aspect/2;camera.right=hh*aspect/2;camera.top=hh/2;camera.bottom=-hh/2;
   }else{
@@ -1031,13 +1031,14 @@ function hitTool(e){
   return obj?.userData.toolIndex??-1;
 }
 renderer.domElement.addEventListener('pointerdown',e=>{downPos={x:e.clientX,y:e.clientY};});
-window.addEventListener('pointerup',e=>{
+renderer.domElement.addEventListener('pointerup',e=>{
   if(!downPos)return;
-  if(Math.hypot(e.clientX-downPos.x,e.clientY-downPos.y)<6&&e.target===renderer.domElement){
+  if(Math.hypot(e.clientX-downPos.x,e.clientY-downPos.y)<12){
     const i=hitTool(e);if(i>=0)select(i);
   }
   downPos=null;
 });
+renderer.domElement.addEventListener('pointercancel',()=>{downPos=null;});
 renderer.domElement.addEventListener('pointermove',e=>{
   if(!downPos){const i=hitTool(e);renderer.domElement.style.cursor=i>=0?'pointer':'default';}
 });
