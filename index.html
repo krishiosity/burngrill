@@ -118,7 +118,7 @@ form.add{display:flex;gap:10px;margin:0 0 6px}
 @media (max-width:860px){
   .stage{grid-template-columns:1fr}
   .tools-sidebar{order:-1;flex-direction:column;align-items:stretch;gap:6px}
-  #toolbelt{min-width:0;width:100%;height:90px}
+  #toolbelt{min-width:0;width:100%;height:90px;flex:none}
   .flame-col{flex-direction:row;padding:6px 0}
   .flame-track{width:100%;height:28px}
   .flame-track::before{left:0;top:50%;transform:translateY(-50%);width:100%;height:10px}
@@ -1030,17 +1030,17 @@ function hitTool(e){
   let obj=hits[0].object;while(obj&&obj.userData.toolIndex===undefined)obj=obj.parent;
   return obj?.userData.toolIndex??-1;
 }
-renderer.domElement.addEventListener('pointerdown',e=>{downPos={x:e.clientX,y:e.clientY};});
-renderer.domElement.addEventListener('pointerup',e=>{
-  if(!downPos)return;
-  if(Math.hypot(e.clientX-downPos.x,e.clientY-downPos.y)<12){
-    const i=hitTool(e);if(i>=0)select(i);
-  }
-  downPos=null;
+renderer.domElement.addEventListener('click',e=>{
+  const i=hitTool(e);if(i>=0)select(i);
 });
-renderer.domElement.addEventListener('pointercancel',()=>{downPos=null;});
+renderer.domElement.addEventListener('touchend',e=>{
+  if(e.changedTouches.length){
+    const t=e.changedTouches[0];
+    const i=hitTool(t);if(i>=0){e.preventDefault();select(i);}
+  }
+});
 renderer.domElement.addEventListener('pointermove',e=>{
-  if(!downPos){const i=hitTool(e);renderer.domElement.style.cursor=i>=0?'pointer':'default';}
+  const i=hitTool(e);renderer.domElement.style.cursor=i>=0?'pointer':'default';
 });
 
 // keyboard 1-5 handled by burn pile's existing handler, but sync 3D selection
