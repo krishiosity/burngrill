@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Burn pile</title>
+<title>Grill it up</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Special+Elite&display=swap" rel="stylesheet">
@@ -140,22 +140,22 @@ form.add{display:flex;gap:10px;margin:0 0 6px}
 <div class="wrap">
   <header>
     <div>
-      <h1>Burn pile</h1>
-      <p class="lede">Write down what's pissing you off and burn it to ash.</p>
+      <h1>Grill it up</h1>
+      <p class="lede">Let's burn off what's pissing you off to ash.</p>
     </div>
     <div class="header-right">
-      <div class="disclaimer">All burns will completely dissolve, no data saved.<br>Questions or concerns: krishiosityisfire@gmail.com</div>
+      <div class="disclaimer"><b>Side note:</b> All burns will completely dissolve, no data saved.<br>Q&amp;A: Krishiosityisfire@gmail.com</div>
       <div class="stats">
         <span class="here" id="here" hidden><i></i><span id="hereN">1 here</span></span>
-        <span><b class="counter" id="pileN">0</b> on the pile</span>
+        <span><b class="counter" id="pileN">0</b> successful burns!</span>
       </div>
     </div>
   </header>
 
   <form class="add" id="addForm" autocomplete="off">
     <label class="sr" for="snip">Something to burn</label>
-    <input id="snip" maxlength="90" placeholder="Something to burn, up to 90 characters">
-    <button type="submit" id="addBtn">Add to pile</button>
+    <input id="snip" maxlength="90" placeholder="LET IT OUT">
+    <button type="submit" id="addBtn">Add</button>
   </form>
   <section class="ideas" aria-label="Suggestions">
     <span class="ideas-lbl">Need an idea?</span>
@@ -172,7 +172,7 @@ form.add{display:flex;gap:10px;margin:0 0 6px}
         <div class="cursors" id="cursors">
           <div class="cursor" id="myCursor" hidden><div class="ring"></div><svg viewBox="0 0 24 24"></svg></div>
         </div>
-        <div class="empty" id="empty">The pile is empty. Write something above and add it.</div>
+        <div class="empty" id="empty">Your grill is ready to burn!!</div>
       </div>
     </div>
     <div class="tools-sidebar">
@@ -1075,8 +1075,11 @@ function animate(now){
   else environment.selection.position.y=THREE.MathUtils.damp(environment.selection.position.y,(2-selected)*3.25,12,dt);
   renderer.render(scene,camera);
 }
+isHoriz=mobileQuery.matches;
+layoutTools();
 new ResizeObserver(fitCamera).observe(stage);
 fitCamera();
+requestAnimationFrame(()=>fitCamera());
 renderer.setAnimationLoop(animate);
 </script>
 </body>
